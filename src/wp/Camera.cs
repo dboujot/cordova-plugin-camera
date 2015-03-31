@@ -1,15 +1,15 @@
 ﻿/*  
-	Licensed under the Apache License, Version 2.0 (the "License");
-	you may not use this file except in compliance with the License.
-	You may obtain a copy of the License at
-	
-	http://www.apache.org/licenses/LICENSE-2.0
-	
-	Unless required by applicable law or agreed to in writing, software
-	distributed under the License is distributed on an "AS IS" BASIS,
-	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	See the License for the specific language governing permissions and
-	limitations under the License.
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 */
 
 using System;
@@ -119,13 +119,13 @@ namespace WPCordovaClassLib.Cordova.Commands
             [DataMember(IsRequired = false, Name = "allowEdit")]
             public bool AllowEdit { get; set; }
 
-                        /// <summary>
+            /// <summary>
             /// Height in pixels to scale image
             /// </summary>
             [DataMember(IsRequired = false, Name = "encodingType")]
             public int EncodingType { get; set; }
 
-                        /// <summary>
+            /// <summary>
             /// Height in pixels to scale image
             /// </summary>
             [DataMember(IsRequired = false, Name = "mediaType")]
@@ -201,7 +201,7 @@ namespace WPCordovaClassLib.Cordova.Commands
                 // a very large number will force the other value to be the bound
                 if (cameraOptions.TargetWidth > -1 && cameraOptions.TargetHeight == -1)
                 {
-                    cameraOptions.TargetHeight = 100000;   
+                    cameraOptions.TargetHeight = 100000;
                 }
                 else if (cameraOptions.TargetHeight > -1 && cameraOptions.TargetWidth == -1)
                 {
@@ -214,7 +214,7 @@ namespace WPCordovaClassLib.Cordova.Commands
                 return;
             }
 
-            if(cameraOptions.DestinationType != Camera.FILE_URI && cameraOptions.DestinationType != Camera.DATA_URL )
+            if (cameraOptions.DestinationType != Camera.FILE_URI && cameraOptions.DestinationType != Camera.DATA_URL)
             {
                 DispatchCommandResult(new PluginResult(PluginResult.Status.ERROR, "Incorrect option: destinationType"));
                 return;
@@ -270,14 +270,16 @@ namespace WPCordovaClassLib.Cordova.Commands
                             MediaLibrary library = new MediaLibrary();
                             Picture pict = library.SavePicture(e.OriginalFileName, e.ChosenPhoto); // to save to photo-roll ...
                         }
-
+                        
                         int newAngle = 0;
                         // There's bug in Windows Phone 8.1 causing Seek on a DssPhotoStream not working properly.
                         // https://connect.microsoft.com/VisualStudio/feedback/details/783252
                         // But a mis-oriented file is better than nothing, so try and catch.
-                        try {
+                        try
+                        {
                             int orient = ImageExifHelper.getImageOrientationFromStream(e.ChosenPhoto);
-                            switch (orient) {
+                            switch (orient)
+                            {
                                 case ImageExifOrientation.LandscapeLeft:
                                     newAngle = 90;
                                     break;
@@ -290,7 +292,9 @@ namespace WPCordovaClassLib.Cordova.Commands
                                 case ImageExifOrientation.Portrait:
                                 default: break; // 0 default already set
                             }
-                        } catch {
+                        }
+                        catch
+                        {
                             Debug.WriteLine("Error fetching orientation from Exif");
                         }
 
@@ -337,7 +341,7 @@ namespace WPCordovaClassLib.Cordova.Commands
                     break;
             }
         }
-     
+
         /// <summary>
         /// Returns image content in a form of base64 string
         /// </summary>
@@ -504,8 +508,8 @@ namespace WPCordovaClassLib.Cordova.Commands
                         GC.Collect();
                     }
                 }
-
-                return new Uri(filePath, UriKind.Relative).ToString();
+                var path = new Uri(Windows.Storage.ApplicationData.Current.LocalFolder.Path + "/" + isoFolder + "/" + imageFileName, UriKind.Absolute).ToString();
+                return path;
             }
             catch (Exception)
             {
